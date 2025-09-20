@@ -1,224 +1,99 @@
-import { useState } from "react";
-import { motion } from "framer-motion";
-
-// --- Simple inline SVGs for diagrams ---
-const PositioningDiagram = () => (
-  <svg viewBox="0 0 600 360" className="w-full h-64">
-    <rect x="0" y="0" width="600" height="360" fill="transparent" stroke="currentColor" className="opacity-20" />
-    {/* Axes */}
-    <line x1="60" y1="320" x2="560" y2="320" stroke="currentColor"/>
-    <line x1="60" y1="40" x2="60" y2="320" stroke="currentColor"/>
-    <text x="300" y="350" className="fill-current text-sm">コスト</text>
-    <text x="0" y="30" className="fill-current text-sm rotate-[-90] origin-center">実行力</text>
-
-    {/* Quadrant labels */}
-    <text x="70" y="60" className="fill-current text-xs opacity-60">高</text>
-    <text x="70" y="335" className="fill-current text-xs opacity-60">低</text>
-
-    {/* Points */}
-    {/* 安価コンサル */}
-    <circle cx="140" cy="300" r="7" fill="currentColor" />
-    <text x="155" y="305" className="fill-current text-xs">安価コンサル（口だけ）</text>
-
-    {/* 営業外注 */}
-    <circle cx="480" cy="280" r="7" fill="currentColor" />
-    <text x="495" y="285" className="fill-current text-xs">営業外注（動くが地図なし）</text>
-
-    {/* 専業人材 */}
-    <circle cx="520" cy="80" r="7" fill="currentColor" />
-    <text x="380" y="85" className="fill-current text-xs">専業事業開発（高額・希少）</text>
-
-    {/* LUIDA'S BAR */}
-    <rect x="260" y="140" width="120" height="40" rx="8" className="fill-current opacity-10" />
-    <text x="270" y="165" className="fill-current text-sm font-semibold">LUIDA'S BAR</text>
-    <text x="270" y="182" className="fill-current text-xs opacity-70">実行×視座／必要量だけ</text>
-  </svg>
-);
-
-const WorkflowDiagram = () => (
-  <svg viewBox="0 0 800 140" className="w-full h-40">
-    {/* Steps */}
-    {[
-      { x: 40, label: "着火", sub: "仮説・優先度" },
-      { x: 260, label: "初期実装", sub: "ICP・導線設置" },
-      { x: 480, label: "獲得と学習", sub: "施策→反応→改善" },
-      { x: 700, label: "型化・移管", sub: "Playbook/引継" },
-    ].map((s, i) => (
-      <g key={i}>
-        <circle cx={s.x} cy={70} r={26} className="fill-transparent stroke-current" />
-        <text x={s.x - 16} y={70} className="fill-current text-sm font-semibold">{s.label}</text>
-        <text x={s.x - 40} y={95} className="fill-current text-xs opacity-70">{s.sub}</text>
-      </g>
-    ))}
-    {/* Arrows */}
-    <defs>
-      <marker id="arrow" markerWidth="8" markerHeight="8" refX="8" refY="4" orient="auto">
-        <path d="M0,0 L8,4 L0,8 z" className="fill-current" />
-      </marker>
-    </defs>
-    <line x1="66" y1="70" x2="234" y2="70" stroke="currentColor" markerEnd="url(#arrow)"/>
-    <line x1="286" y1="70" x2="454" y2="70" stroke="currentColor" markerEnd="url(#arrow)"/>
-    <line x1="506" y1="70" x2="674" y2="70" stroke="currentColor" markerEnd="url(#arrow)"/>
-  </svg>
-);
-
-export default function LuidaLP() {
-  const [showMoreDeliverables, setShowMoreDeliverables] = useState(false);
-
-  return (
-    <div className="min-h-screen bg-white text-gray-900">
-      {/* Header */}
-      <header className="px-6 sm:px-10 py-10 border-b">
-        <div className="max-w-6xl mx-auto flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-2xl bg-gray-900 text-white grid place-items-center font-bold">LB</div>
-            <div>
-              <h1 className="text-2xl font-bold tracking-tight">LUIDA'S BAR</h1>
-              <p className="text-sm opacity-70 -mt-1">実働型 0→1 事業開発ユニット</p>
-            </div>
-          </div>
-          <a href="#contact" className="text-sm underline underline-offset-4">紹介経由でのご連絡のみ</a>
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>LUIDA'S BAR</title>
+  <!-- Tailwind CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-white text-gray-900">
+  <!-- Header -->
+  <header class="px-6 sm:px-10 py-10 border-b">
+    <div class="max-w-6xl mx-auto flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-2xl bg-gray-900 text-white grid place-items-center font-bold">LB</div>
+        <div>
+          <h1 class="text-2xl font-bold tracking-tight">LUIDA'S BAR</h1>
+          <p class="text-sm opacity-70 -mt-1">実働型 0→1 事業開発ユニット</p>
         </div>
-      </header>
-
-      {/* Hero */}
-      <section className="px-6 sm:px-10 py-16">
-        <div className="max-w-5xl mx-auto grid md:grid-cols-2 gap-10 items-center">
-          <div>
-            <h2 className="text-3xl md:text-4xl font-semibold leading-tight">コンサル以上、専業未満。<br />事業開発“ごと”動かす実働チーム。</h2>
-            <p className="mt-4 text-lg opacity-80">視座と手足をひとつに。3〜12ヶ月で0→1を作り、Playbookを残して去る。医療・ヘルスケア周辺の立ち上げ期に特化。</p>
-            <ul className="mt-6 space-y-2 text-sm opacity-90 list-disc ml-5">
-              <li>言うだけでなく、現場で動く（営業・マーケ・資料化・合意形成）</li>
-              <li>必要な分だけアサイン（約10名の可動ベンチ：事業・営業・獲得系マーケ）</li>
-              <li>守秘前提。実例はクローズドで提示</li>
-            </ul>
-          </div>
-          <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="p-6 rounded-2xl border">
-            <div className="text-sm font-semibold">位置づけ</div>
-            <PositioningDiagram />
-            <p className="text-xs opacity-70 mt-2">※ コスト×実行力の座標上での概念図</p>
-          </motion.div>
-        </div>
-      </section>
-
-      {/* About */}
-      <section className="px-6 sm:px-10 py-12 bg-gray-50">
-        <div className="max-w-5xl mx-auto">
-          <h3 className="text-xl font-semibold">ルイーダとは？</h3>
-          <p className="mt-3 leading-7">
-            LUIDA'S BAR は、医療業界および隣接領域の新規事業立ち上げに特化した実働型のプロジェクトチームです。コンサルのように“正論”を並べるだけではなく、同じチームが仮説を設計し、自ら現場で手を動かして検証し、勝ち筋を“型”として残します。期間は3〜12ヶ月の短期集中。以後の1→10・10→100は、正社員採用や外部パートナーへ気持ちよくバトンを渡します。
-          </p>
-        </div>
-      </section>
-
-      {/* Differentiators */}
-      <section className="px-6 sm:px-10 py-14">
-        <div className="max-w-6xl mx-auto">
-          <h3 className="text-xl font-semibold">なぜ LUIDA'S BAR なのか</h3>
-          <div className="grid md:grid-cols-3 gap-6 mt-6">
-            {[
-              { title: "言うだけでなく動き切る", body: "仮説→実装→学習→型化まで一体運用。摩擦の多い医療現場で“通る”前提の作り。" },
-              { title: "視座×手足の一体化", body: "事業開発の視点で方向を定め、同じチームの手で検証。反応→改善のループが速い。" },
-              { title: "医療の行間と言語", body: "経営・臨床双方の言葉で矛盾を削り、KOL/院内稟議の流れに適合。ネットワークも初速を押し上げる。" },
-              { title: "可変アサインで最適コスト", body: "専業にしない設計。必要量だけ切り出す人材群（約10名）で質×費用対効果を両立。" },
-              { title: "問いの設計とスピード", body: "何を捨てるか／何から試すか。週次で意思決定し、季節性や院内タイムラインを前提に運ぶ。" },
-              { title: "残して去る", body: "Playbook・資料・CRM・スクリプト・KPI運用まで。居座らず、再現可能性を最優先。" },
-            ].map((c, i) => (
-              <div key={i} className="p-6 rounded-2xl border bg-white">
-                <div className="text-base font-semibold">{c.title}</div>
-                <p className="mt-2 text-sm opacity-80 leading-6">{c.body}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Workflow */}
-      <section className="px-6 sm:px-10 py-14 bg-gray-50">
-        <div className="max-w-6xl mx-auto grid lg:grid-cols-2 gap-10 items-center">
-          <div>
-            <h3 className="text-xl font-semibold">0→1 の進め方</h3>
-            <ol className="mt-4 space-y-3 text-sm">
-              <li><span className="font-semibold">1. 着火：</span> ヒアリング、資産棚卸し、仮説マップ、優先度。</li>
-              <li><span className="font-semibold">2. 初期実装：</span> ICP定義、価値の言語化、導線設置（営業/マーケ）。</li>
-              <li><span className="font-semibold">3. 獲得と学習：</span> 実アプローチ→反応→メッセージ/導線の反復改善。</li>
-              <li><span className="font-semibold">4. 型化と移管：</span> Playbook、資料、CRM、スクリプト、KPI運用を整えて移管。</li>
-            </ol>
-          </div>
-          <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="p-6 rounded-2xl border bg-white">
-            <WorkflowDiagram />
-            <p className="text-xs opacity-70 mt-2">※ 実装と学習を短サイクルで回す前提設計</p>
-          </motion.div>
-        </div>
-      </section>
-
-      {/* Deliverables */}
-      <section className="px-6 sm:px-10 py-14">
-        <div className="max-w-6xl mx-auto">
-          <h3 className="text-xl font-semibold">Deliverables（一例）</h3>
-          <div className="grid md:grid-cols-3 gap-6 mt-6">
-            {[
-              "市場マップ／ICP・JTBD定義／メッセージ原案",
-              "提案書テンプレ／院内説明スライド／患者配布物雛形",
-              "アプローチ台帳・CRM基礎設計（タグ／ステージ／活動ログ）",
-              "営業スクリプト／反論処理集／メール・フォーム・LP下書き",
-              "KPI設計（先行・遅行）と週次レビュー運用",
-              "Playbook（再現手順）と引き継ぎ計画",
-            ].slice(0, showMoreDeliverables ? 6 : 3).map((d, i) => (
-              <div key={i} className="p-5 rounded-2xl border bg-white text-sm leading-6">{d}</div>
-            ))}
-          </div>
-          <button onClick={() => setShowMoreDeliverables(!showMoreDeliverables)} className="mt-6 text-sm underline underline-offset-4">
-            {showMoreDeliverables ? "閉じる" : "もっと見る"}
-          </button>
-        </div>
-      </section>
-
-      {/* Fit / Unfit */}
-      <section className="px-6 sm:px-10 py-14 bg-gray-50">
-        <div className="max-w-6xl mx-auto grid md:grid-cols-2 gap-10">
-          <div className="p-6 rounded-2xl border bg-white">
-            <div className="text-base font-semibold">フィットする状況</div>
-            <ul className="mt-3 text-sm space-y-2">
-              <li>良い資産や仮説はあるが、実働不足で形にできていない</li>
-              <li>専業採用や高額外注の前に、短期で勝ち筋を検証したい</li>
-              <li>3〜12ヶ月で最初の顧客獲得〜再現手順を固めたい</li>
-            </ul>
-          </div>
-          <div className="p-6 rounded-2xl border bg-white">
-            <div className="text-base font-semibold">フィットしない状況</div>
-            <ul className="mt-3 text-sm space-y-2">
-              <li>1→10以降のスケール最適化フェーズ（運用人月中心）</li>
-              <li>実名公開の派手な実績列挙を求める（実例はクローズドで提示）</li>
-              <li>助言だけ欲しい（実働が前提のため）</li>
-            </ul>
-          </div>
-        </div>
-      </section>
-
-      {/* Pricing / Terms */}
-      <section className="px-6 sm:px-10 py-14">
-        <div className="max-w-5xl mx-auto">
-          <h3 className="text-xl font-semibold">契約レンジと期間</h3>
-          <p className="mt-3 text-sm leading-7">月 <span className="font-semibold">50〜100万円</span>（稼働とスコープに応じて設計）。期間は <span className="font-semibold">3・6・12ヶ月</span> の短期集中を基本とし、延長可。ただし“居座らない”ポリシーで、Playbookと仕組みを残して移管します。</p>
-        </div>
-      </section>
-
-      {/* Contact */}
-      <section id="contact" className="px-6 sm:px-10 py-16 bg-gray-900 text-white">
-        <div className="max-w-5xl mx-auto">
-          <h3 className="text-xl font-semibold">クローズドお問い合わせ</h3>
-          <p className="mt-3 opacity-90">本ページはご紹介いただいた方のみを対象としています。詳細は個別にお伝えします。プロフィールシート（実績・体制・進め方の詳細）はNDA締結後に共有可能です。</p>
-          <div className="mt-6 p-5 rounded-2xl border border-white/20">
-            <p className="text-sm">ご連絡方法：</p>
-            <ul className="text-sm opacity-90 list-disc ml-5 mt-2 space-y-1">
-              <li>ご紹介者経由でのご連絡</li>
-              <li>既存のやり取りチャネル（Slack/メール 等）</li>
-            </ul>
-          </div>
-          <p className="text-xs opacity-60 mt-6">© {new Date().getFullYear()} LUIDA'S BAR</p>
-        </div>
-      </section>
+      </div>
+      <a href="#contact" class="text-sm underline underline-offset-4">紹介経由でのご連絡のみ</a>
     </div>
-  );
-}
+  </header>
+
+  <!-- Hero -->
+  <section class="px-6 sm:px-10 py-16">
+    <div class="max-w-5xl mx-auto grid md:grid-cols-2 gap-10 items-center">
+      <div>
+        <h2 class="text-3xl md:text-4xl font-semibold leading-tight">
+          コンサル以上、専業未満。<br/>事業開発“ごと”動かす実働チーム。
+        </h2>
+        <p class="mt-4 text-lg opacity-80">
+          視座と手足をひとつに。3〜12ヶ月で0→1を作り、Playbookを残して去る。医療・ヘルスケア周辺の立ち上げ期に特化。
+        </p>
+        <ul class="mt-6 space-y-2 text-sm opacity-90 list-disc ml-5">
+          <li>言うだけでなく、現場で動く（営業・マーケ・資料化・合意形成）</li>
+          <li>必要な分だけアサイン（約10名の可動ベンチ：事業・営業・マーケ）</li>
+          <li>守秘前提。実例はクローズドで提示</li>
+        </ul>
+      </div>
+      <!-- 図解①：位置づけ -->
+      <div class="p-6 rounded-2xl border">
+        <div class="text-sm font-semibold">位置づけ</div>
+        <svg viewBox="0 0 600 360" class="w-full h-64">
+          <rect x="0" y="0" width="600" height="360" fill="transparent" stroke="currentColor" class="opacity-20" />
+          <line x1="60" y1="320" x2="560" y2="320" stroke="currentColor" />
+          <line x1="60" y1="40" x2="60" y2="320" stroke="currentColor" />
+          <text x="300" y="350" class="fill-current text-sm">コスト</text>
+          <text x="14" y="20" class="fill-current text-sm">実行力</text>
+          <circle cx="140" cy="300" r="7" fill="currentColor" />
+          <text x="155" y="305" class="fill-current text-xs">安価コンサル</text>
+          <circle cx="480" cy="280" r="7" fill="currentColor" />
+          <text x="495" y="285" class="fill-current text-xs">営業外注</text>
+          <circle cx="520" cy="80" r="7" fill="currentColor" />
+          <text x="380" y="85" class="fill-current text-xs">専業人材</text>
+          <rect x="260" y="140" width="120" height="40" rx="8" class="fill-current opacity-10" />
+          <text x="270" y="165" class="fill-current text-sm font-semibold">LUIDA'S BAR</text>
+          <text x="270" y="182" class="fill-current text-xs opacity-70">実行×視座</text>
+        </svg>
+        <p class="text-xs opacity-70 mt-2">※ コスト×実行力の概念図</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Workflow -->
+  <section class="px-6 sm:px-10 py-14 bg-gray-50">
+    <div class="max-w-6xl mx-auto grid lg:grid-cols-2 gap-10 items-center">
+      <div>
+        <h3 class="text-xl font-semibold">0→1 の進め方</h3>
+        <ol class="mt-4 space-y-3 text-sm">
+          <li>1. 着火：ヒアリング／仮説マップ／優先度</li>
+          <li>2. 初期実装：ICP定義／導線設置／価値の言語化</li>
+          <li>3. 獲得と学習：施策→反応→改善</li>
+          <li>4. 型化と移管：Playbook・資料・CRM・スクリプトを残す</li>
+        </ol>
+      </div>
+      <div class="p-6 rounded-2xl border bg-white">
+        <svg viewBox="0 0 800 140" class="w-full h-40">
+          <g><circle cx="40" cy="70" r="26" class="fill-transparent stroke-current"/><text x="20" y="70" class="fill-current text-sm">着火</text></g>
+          <g><circle cx="260" cy="70" r="26" class="fill-transparent stroke-current"/><text x="240" y="70" class="fill-current text-sm">初期実装</text></g>
+          <g><circle cx="480" cy="70" r="26" class="fill-transparent stroke-current"/><text x="460" y="70" class="fill-current text-sm">獲得学習</text></g>
+          <g><circle cx="700" cy="70" r="26" class="fill-transparent stroke-current"/><text x="680" y="70" class="fill-current text-sm">型化移管</text></g>
+        </svg>
+      </div>
+    </div>
+  </section>
+
+  <!-- Contact -->
+  <section id="contact" class="px-6 sm:px-10 py-16 bg-gray-900 text-white">
+    <div class="max-w-5xl mx-auto">
+      <h3 class="text-xl font-semibold">クローズドお問い合わせ</h3>
+      <p class="mt-3 opacity-90">
+        本ページはご紹介いただいた方のみを対象としています。詳細は個別にお伝えします。
+      </p>
+      <p class="text-xs opacity-60 mt-6">© 2025 LUIDA'S BAR</p>
+    </div>
+  </section>
+</body>
+</html>
